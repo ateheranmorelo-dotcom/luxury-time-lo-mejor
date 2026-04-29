@@ -1276,9 +1276,9 @@ function buildRemoteProduct(item) {
   }
   // Ajustes específicos
   if (titleLower.includes('reloj niña disney') || titleLower.includes('reloj niña frozen') || titleLower.includes('reloj niña minnie')) {
-    precio = 35000;
+    precio = 40000; // Cambiado a 40k
   } else if (titleLower.includes('caja de proteccion') || titleLower.includes('caja de presentacion generica')) {
-    precio += 5000;
+    precio += 10000; // Cambiado a +10k
   }
   return {
     id: item.id,
@@ -1290,7 +1290,7 @@ function buildRemoteProduct(item) {
     desc: normalizeDesc(item.body_html || ''),
     specs: {},
     img: item.images && item.images[0] && item.images[0].src ? item.images[0].src : '',
-    badge: variant.available === false ? 'Agotado' : ''
+    badge: variant.available === false ? 'Agotado' : (Math.random() < 0.002 ? 'Unidades Limitadas' : '')
   };
 }
 

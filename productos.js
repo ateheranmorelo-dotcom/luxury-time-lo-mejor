@@ -8,7 +8,7 @@ PRODUCTOS = [
     "precio": 65000.0,
     "desc": "Reloj Luxury con cristal mineral resistente. Incluye caja de presentaci\u00f3n.",
     "img": "https://cdn.shopify.com/s/files/1/0873/2039/6062/files/WhatsAppImage2026-04-28at14.22.20_4.jpg?v=1777412738",
-    "badge": ""
+    "badge": "Unidades Limitadas"
   },
   {
     "id": 10086490898718,
@@ -173,7 +173,7 @@ PRODUCTOS = [
     "precio": 65000.0,
     "desc": "Reloj Luxury con cristal mineral resistente. Incluye caja de presentaci\u00f3n.",
     "img": "https://cdn.shopify.com/s/files/1/0873/2039/6062/files/WhatsAppImage2026-04-28at14.22.16.jpg?v=1777408171",
-    "badge": ""
+    "badge": "Unidades Limitadas"
   },
   {
     "id": 10086313525534,
@@ -184,7 +184,7 @@ PRODUCTOS = [
     "precio": 65000.0,
     "desc": "Reloj Luxury con cristal mineral resistente. Incluye caja de presentaci\u00f3n.",
     "img": "https://cdn.shopify.com/s/files/1/0873/2039/6062/files/WhatsAppImage2026-04-28at14.22.15_1.jpg?v=1777407790",
-    "badge": ""
+    "badge": "Unidades Limitadas"
   },
   {
     "id": 10086306316574,
