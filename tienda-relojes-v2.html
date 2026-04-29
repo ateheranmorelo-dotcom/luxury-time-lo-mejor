@@ -1262,17 +1262,23 @@ function buildRemoteProduct(item) {
   const variant = Array.isArray(item.variants) ? item.variants[0] || {} : {};
   const titleParts = (item.title || '').split(' ');
   const marca = titleParts[0] || 'Luxury';
-  const cat = Math.random() > 0.5 ? 'Hombres' : 'Mujeres'; // Asignar género aleatoriamente
+  const cat = titleLower.includes('mujer') || titleLower.includes('niña') ? 'Mujeres' : 'Hombres';
   let precio = Number(parseFloat(variant.price || 0)) || 0;
   const titleLower = (item.title || '').toLowerCase();
   if (titleLower.includes('combo')) {
-    precio += 300000;
+    precio += 350000;
   } else if (titleLower.includes('camiseta colombia')) {
     precio += 50000;
   } else if (titleLower.includes('pareja')) {
     precio += 150000;
   } else {
     precio += 70000; // Para todos los relojes
+  }
+  // Ajustes específicos
+  if (titleLower.includes('reloj niña disney') || titleLower.includes('reloj niña frozen') || titleLower.includes('reloj niña minnie')) {
+    precio = 35000;
+  } else if (titleLower.includes('caja de proteccion') || titleLower.includes('caja de presentacion generica')) {
+    precio += 5000;
   }
   return {
     id: item.id,
