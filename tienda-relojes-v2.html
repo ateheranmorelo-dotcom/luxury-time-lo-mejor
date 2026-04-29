@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="Luxury Time — Relojes Luxury. Colección exclusiva con envío a toda Colombia.">
+<meta name="robots" content="index, follow">
+<!-- Seguridad básica -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+<title>Luxury Time</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   VARIABLES & RESET
+============================================================ */
+:root {
+  --gold:        #C9A84C;
+  --gold-light:  #E8C97A;
+  --gold-pale:   #F5E8C0;
+  --gold-dark:   #7A5C10;
+  --gold-glow:   rgba(201,168,76,0.18);
+  --black:       #070707;
+  --dark:        #0E0E0E;
+  --dark2:       #161616;
+  --dark3:       #1E1E1E;
+  --border:      rgba(201,168,76,0.12);
+  --border-hov:  rgba(201,168,76,0.4);
+  --text:        #EDE5D0;
+  --text-muted:  #7A7060;
+  --text-dim:    #3A3530;
+  --whatsapp:    #25D366;
+  --wa-dark:     #128C7E;
+  --radius:      2px;
+  --transition:  cubic-bezier(0.25,0.8,0.25,1);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  /* Deshabilitar selección de texto en áreas sensibles */
+  -webkit-tap-highlight-color: transparent;
+}
+
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; }
+a { text-decoration: none; color: inherit; }
+
+/* ============================================================
+   LOADER — Reloj animado
+============================================================ */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Reloj SVG animado */
+.loader-clock {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+
+.clock-face {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-dark);
+  position: relative;
+  background: radial-gradient(circle at 30% 30%, #1a1400, #070707);
+  box-shadow: 0 0 30px var(--gold-glow), inset 0 0 20px rgba(0,0,0,0.8);
+}
+
+.clock-face::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-dark);
+  opacity: 0.4;
+}
+
+/* Marcas del reloj */
+.clock-marks {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.clock-mark {
+  position: absolute;
+  width: 1px;
+  height: 6px;
+  background: var(--gold-dark);
+  top: 4px;
+  left: 50%;
+  transform-origin: 50% calc(45px - 4px);
+  opacity: 0.6;
+}
+
+.clock-mark.big {
+  width: 2px;
+  height: 9px;
+  background: var(--gold);
+  opacity: 1;
+}
+
+/* Centro del reloj */
+.clock-center {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 3;
+  box-shadow: 0 0 6px var(--gold);
+}
+
+/* Manecillas */
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 2px;
+}
+
+.hand-hours {
+  width: 3px;
+  height: 24px;
+  background: var(--gold);
+  margin-left: -1.5px;
+  animation: rotateHours 10s linear infinite;
+  box-shadow: 0 0 4px var(--gold);
+}
+
+.hand-minutes {
+  width: 2px;
+  height: 32px;
+  background: var(--gold-light);
+  margin-left: -1px;
+  animation: rotateMinutes 2s linear infinite;
+  box-shadow: 0 0 3px var(--gold-light);
+}
+
+.hand-seconds {
+  width: 1px;
+  height: 36px;
+  background: #fff;
+  margin-left: -0.5px;
+  animation: rotateSeconds 0.5s linear infinite;
+  margin-bottom: -8px;
+  height: 38px;
+}
+
+@keyframes rotateHours   { from{transform:rotate(0deg)}  to{transform:rotate(360deg)} }
+@keyframes rotateMinutes { from{transform:rotate(0deg)}  to{transform:rotate(360deg)} }
+@keyframes rotateSeconds { from{transform:rotate(0deg)}  to{transform:rotate(360deg)} }
+
+/* Texto loader */
+.loader-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.loader-tagline {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+/* Barra de progreso */
+.loader-bar-wrap {
+  width: 180px;
+  height: 1px;
+  background: var(--dark3);
+  position: relative;
+  overflow: hidden;
+}
+
+.loader-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  width: 0%;
+  transition: width 0.15s ease;
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+/* ============================================================
+   FONDO BRILLO TIPO BUSINESS — Canvas
+============================================================ */
+#luxCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+}
+
+/* ============================================================
+   SCROLLBAR
+============================================================ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ============================================================
+   HEADER
+============================================================ */
+#mainHeader {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: rgba(7,7,7,0.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0 clamp(16px, 4vw, 48px);
+}
+
+.header-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.logo-main {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: var(--gold);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.logo-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--text-muted);
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.header-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--whatsapp);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: background 0.3s, transform 0.2s;
+  white-space: nowrap;
+}
+.header-wa:hover { background: var(--wa-dark); transform: translateY(-1px); }
+.header-wa svg { width: 16px; height: 16px; fill: #fff; flex-shrink: 0; }
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: clamp(60px, 10vw, 110px) clamp(16px, 4vw, 48px);
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  font-weight: 500;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s var(--transition) forwards;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 9vw, 96px);
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+  margin-bottom: 22px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s var(--transition) forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);
+  display: inline-block;
+  position: relative;
+}
+
+.hero h1 em::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(16px, 2.5vw, 21px);
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto 44px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.7s var(--transition) forwards;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: clamp(32px, 6vw, 72px);
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.9s var(--transition) forwards;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* Separador dorado */
+.gold-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-dark) 30%, var(--gold) 50%, var(--gold-dark) 70%, transparent 100%);
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   CONTROLES
+============================================================ */
+.controls-bar {
+  position: sticky;
+  top: 76px;
+  z-index: 400;
+  background: rgba(10,10,10,0.95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 16px clamp(16px, 4vw, 48px);
+}
+
+.controls-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 13px;
+}
+
+.ctrl-input {
+  width: 100%;
+  background: var(--dark2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 14px 11px 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.ctrl-input:focus {
+  border-color: var(--gold-dark);
+  box-shadow: 0 0 0 2px rgba(201,168,76,0.08);
+}
+.ctrl-input::placeholder { color: var(--text-muted); }
+
+.ctrl-select {
+  background: var(--dark2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 36px 11px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  border-radius: var(--radius);
+  outline: none;
+  cursor: pointer;
+  min-width: 150px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A7060'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  transition: border-color 0.3s;
+}
+.ctrl-select:focus { border-color: var(--gold-dark); }
+
+.results-info {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin-left: auto;
+  letter-spacing: 0.5px;
+}
+.results-info strong { color: var(--gold); }
+
+/* ============================================================
+   GRID DE PRODUCTOS
+============================================================ */
+.catalog {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 36px clamp(12px, 3vw, 48px) 60px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+/* ============================================================
+   CARD
+============================================================ */
+.card {
+  background: var(--dark);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.3s;
+  /* Animación de entrada */
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cardIn 0.45s var(--transition) forwards;
+}
+
+.card:hover { background: var(--dark2); }
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color 0.3s;
+  z-index: 2;
+}
+.card:hover::after { border-color: var(--gold-dark); }
+
+/* Shimmer al hover */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(105deg, transparent 40%, rgba(201,168,76,0.04) 50%, transparent 60%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.card:hover::before { transform: translate(300%, 0); }
+
+@keyframes cardIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--gold);
+  color: #000;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 3px 9px;
+  text-transform: uppercase;
+  z-index: 4;
+  border-radius: var(--radius);
+}
+
+.card-img-wrap {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--dark2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--transition);
+  /* Lazy load fade */
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.5s var(--transition);
+}
+
+.card-img-wrap img.loaded { opacity: 1; }
+.card:hover .card-img-wrap img { transform: scale(1.06); }
+
+.card-no-img {
+  font-size: 48px;
+  color: var(--gold-dark);
+  transition: transform 0.4s var(--transition), color 0.3s;
+}
+.card:hover .card-no-img { transform: scale(1.1) rotate(-5deg); color: var(--gold); }
+
+.card-body {
+  padding: 16px 18px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-brand {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+  flex: 1;
+  margin-top: 2px;
+}
+
+.card-ref {
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  gap: 8px;
+}
+
+.card-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.card-price small {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-right: 1px;
+}
+
+.btn-buy {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 8px 14px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-buy:hover {
+  background: var(--gold-light);
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px rgba(201,168,76,0.3);
+}
+.btn-buy svg { width: 12px; height: 12px; fill: #000; }
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
+.empty-state {
+  display: none;
+  text-align: center;
+  padding: 80px 20px;
+}
+.empty-state h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.empty-state p { color: var(--text-muted); font-size: 13px; }
+
+/* ============================================================
+   LOAD MORE
+============================================================ */
+.load-more-area {
+  text-align: center;
+  padding: 32px 0 0;
+}
+
+.btn-load-more {
+  background: transparent;
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+  padding: 13px 48px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  transition: all 0.3s;
+}
+.btn-load-more:hover {
+  background: var(--gold);
+  color: #000;
+  box-shadow: 0 0 20px rgba(201,168,76,0.2);
+}
+
+/* ============================================================
+   MODAL
+============================================================ */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 800;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.modal-bg.open { display: flex; }
+
+.modal-box {
+  background: var(--dark);
+  border: 1px solid var(--border-hov);
+  max-width: 720px;
+  width: 100%;
+  max-height: 90dvh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalIn 0.35s var(--transition);
+  border-radius: var(--radius);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 40px rgba(201,168,76,0.06);
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none; border: none;
+  color: var(--text-muted);
+  font-size: 26px;
+  line-height: 1;
+  z-index: 10;
+  transition: color 0.2s;
+  padding: 4px;
+}
+.modal-close-btn:hover { color: var(--gold); }
+
+.modal-media {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: var(--dark2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 80px;
+  color: var(--gold-dark);
+}
+.modal-media img { width: 100%; height: 100%; object-fit: cover; }
+
+.modal-content { padding: clamp(20px, 4vw, 32px); }
+
+.modal-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.modal-brand {
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.modal-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.modal-ref {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+.modal-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin: 16px 0 22px;
+  padding: 16px;
+  background: var(--dark2);
+  border-left: 2px solid var(--gold-dark);
+}
+
+.modal-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.spec {
+  border-left: 2px solid var(--gold-dark);
+  padding-left: 12px;
+}
+.spec-label { font-size: 8px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; }
+.spec-val   { font-size: 13px; color: var(--text); margin-top: 3px; }
+
+.modal-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.modal-price {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.modal-price small {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.btn-modal-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--whatsapp);
+  color: #fff;
+  border: none;
+  padding: 14px 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: var(--radius);
+  transition: all 0.3s;
+}
+.btn-modal-wa:hover {
+  background: var(--wa-dark);
+  box-shadow: 0 8px 24px rgba(37,211,102,0.25);
+  transform: translateY(-1px);
+}
+.btn-modal-wa svg { width: 20px; height: 20px; fill: #fff; }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer {
+  position: relative;
+  z-index: 1;
+  background: #000;
+  border-top: 1px solid var(--border);
+  padding: clamp(32px, 6vw, 56px) clamp(16px, 4vw, 48px);
+  text-align: center;
+}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 7px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.footer-rule {
+  width: 50px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 16px;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 2;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+}
+
+.footer-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--whatsapp);
+  color: #fff;
+  padding: 12px 28px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: var(--radius);
+  transition: background 0.3s;
+}
+.footer-wa:hover { background: var(--wa-dark); }
+.footer-wa svg { width: 16px; height: 16px; fill: #fff; }
+
+.footer-copy {
+  margin-top: 24px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   WHATSAPP FLOTANTE
+============================================================ */
+.wa-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 600;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--whatsapp);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(37,211,102,0.35);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+}
+.wa-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 32px rgba(37,211,102,0.5);
+}
+.wa-fab svg { width: 28px; height: 28px; fill: #fff; }
+
+.wa-fab-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(37,211,102,0.3);
+  animation: fabPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes fabPulse {
+  0%,100% { transform: scale(1); opacity: 0.8; }
+  50%      { transform: scale(1.18); opacity: 0.1; }
+}
+
+/* ============================================================
+   ANIMACIONES GLOBALES
+============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 640px) {
+  .header-inner { height: 64px; }
+  .controls-bar { top: 64px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .header-wa span { display: none; }
+  .modal-specs { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 360px) {
+  .products-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOADER
+============================================================ -->
+<div id="loader" role="status" aria-label="Cargando tienda">
+  <div class="loader-clock" aria-hidden="true">
+    <div class="clock-face">
+      <div class="clock-marks" id="clockMarks"></div>
+      <div class="hand hand-hours"  id="handH"></div>
+      <div class="hand hand-minutes" id="handM"></div>
+      <div class="hand hand-seconds" id="handS"></div>
+      <div class="clock-center"></div>
+    </div>
+  </div>
+  <div>
+    <div class="loader-brand">Luxury Time</div>
+    <div class="loader-tagline">Cargando colección...</div>
+  </div>
+  <div class="loader-bar-wrap">
+    <div class="loader-bar" id="loaderBar"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FONDO ANIMADO (Canvas)
+============================================================ -->
+<canvas id="luxCanvas" aria-hidden="true"></canvas>
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+<header id="mainHeader">
+  <div class="header-inner">
+    <a href="#" class="logo" aria-label="Luxury Time — Inicio">
+      <span class="logo-main">Luxury Time</span>
+      <span class="logo-sub">Relojes de Lujo — Colombia</span>
+    </a>
+    <a href="#" class="header-wa" id="headerWA" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      <span>Contáctanos</span>
+    </a>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero">
+  <p class="hero-eyebrow">✦ Colección Luxury ✦</p>
+  <h1>El Tiempo<br>es <em>Lujo</em></h1>
+  <p class="hero-sub">Cada reloj cuenta una historia de precisión y elegancia atemporal</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num" id="totalStat">—</span>
+      <span class="stat-label">Modelos</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">50+</span>
+      <span class="stat-label">Marcas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">24/7</span>
+      <span class="stat-label">Atención</span>
+    </div>
+  </div>
+</section>
+<div class="gold-divider"></div>
+
+<!-- ============================================================
+     CONTROLES
+============================================================ -->
+<div class="controls-bar">
+  <div class="controls-inner">
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="searchInput" class="ctrl-input"
+             placeholder="Buscar por nombre, marca, referencia..."
+             autocomplete="off" spellcheck="false"
+             aria-label="Buscar productos">
+    </div>
+    <select id="filterBrand"    class="ctrl-select" aria-label="Filtrar por marca">
+      <option value="">Todas las marcas</option>
+    </select>
+    <select id="filterCategory" class="ctrl-select" aria-label="Filtrar por categoría">
+      <option value="">Todas las categorías</option>
+      <option>Hombres</option>
+      <option>Mujeres</option>
+    </select>
+    <select id="sortBy" class="ctrl-select" aria-label="Ordenar productos">
+      <option value="">Ordenar por...</option>
+      <option value="price-asc">Precio ↑</option>
+      <option value="price-desc">Precio ↓</option>
+      <option value="name-asc">Nombre A-Z</option>
+      <option value="brand-asc">Marca A-Z</option>
+    </select>
+    <div class="results-info" id="resultsInfo" aria-live="polite">
+      <strong id="showingN">0</strong> de <strong id="totalN">0</strong> relojes
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CATÁLOGO
+============================================================ -->
+<main class="catalog" id="catalog">
+  <div class="products-grid" id="grid" role="list"></div>
+  <div class="empty-state" id="emptyState" role="status">
+    <h3>Sin resultados</h3>
+    <p>Prueba con otro término de búsqueda o categoría</p>
+  </div>
+  <div class="load-more-area" id="loadMoreArea" style="display:none">
+    <button class="btn-load-more" id="loadMoreBtn" onclick="loadMore()">
+      Ver más relojes
+    </button>
+  </div>
+</main>
+
+<!-- ============================================================
+     MODAL
+============================================================ -->
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true"
+     aria-labelledby="modalName" onclick="handleModalBgClick(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close-btn" onclick="closeModal()" aria-label="Cerrar">✕</button>
+    <div class="modal-media" id="modalMedia" aria-hidden="true"></div>
+    <div class="modal-content">
+      <div class="modal-brand" id="modalBrand"></div>
+      <div class="modal-name"  id="modalName"></div>
+      <div class="modal-ref"   id="modalRef"></div>
+      <div class="modal-desc"  id="modalDesc"></div>
+      <div class="modal-specs" id="modalSpecs"></div>
+      <div class="modal-action-row">
+        <div class="modal-price" id="modalPrice"></div>
+        <a href="#" class="btn-modal-wa" id="modalWA"
+           target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-logo">Luxury Time</div>
+  <div class="footer-rule"></div>
+  <div class="footer-text">
+    Relojes de Lujo para quienes buscan elegancia.<br>
+    Envíos a toda Colombia · Garantía en todos los productos
+  </div>
+  <a href="#" class="footer-wa" id="footerWA" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Escribir al WhatsApp
+  </a>
+  <div class="footer-copy">© 2024 Luxury Time · Todos los derechos reservados</div>
+</footer>
+
+<!-- WhatsApp Flotante -->
+<a href="#" class="wa-fab" id="waFab" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+  <div class="wa-fab-ring" aria-hidden="true"></div>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script src="productos.js"></script>
+<script>
+'use strict';
+
+// ============================================================
+// ✏️  CONFIGURACIÓN — EDITA AQUÍ TUS DATOS
+// ============================================================
+const CFG = {
+  tienda:   'Luxury Time',
+  whatsapp: '573003730313', 
+  moneda:   'COP',
+  simbolo:  '$',
+  perPagina: 24,
+};
+
+// ============================================================
+// 🔒 SANITIZACIÓN — seguridad básica anti-XSS
+// ============================================================
+function san(str) {
+  if (typeof str !== 'string') return String(str ?? '');
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+// Validar URL de imagen (solo http/https)
+function safeImg(url) {
+  if (!url || typeof url !== 'string') return '';
+  try {
+    const u = new URL(url);
+    return (u.protocol === 'https:' || u.protocol === 'http:') ? url : '';
+  } catch { return ''; }
+}
+
+// Construir link WhatsApp seguro
+function buildWA(num, msg) {
+  const clean = String(num).replace(/\D/g, '');
+  return `https://wa.me/${clean}?text=${encodeURIComponent(msg)}`;
+}
+
+// ============================================================
+// 📦  TU CATÁLOGO — carga dinámica desde API
+// ============================================================
+let PRODUCTOS = window.PRODUCTOS || [];
+const REMOTE_CATALOG = {
+  base: 'https://www.businesscolombia.shop',
+  collection: 'newest-products',
+  limit: 250,
+  maxPages: 6,
+};
+
+function stripHtml(html) {
+  return String(html || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/?(?:p|div|h[1-6]|li|strong|em|b|span)[^>]*>/gi, '\n')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\n{2,}/g, '\n\n')
+    .trim();
+}
+
+function normalizeDesc(html) {
+  return stripHtml(html)
+    .replace(/TIPO\s+BUSINESS/gi, 'TIPO LUXURY')
+    .replace(/RELOJ\s+TIPO\s+LUXURY/gi, 'RELOJ LUXURY')
+    .replace(/BUSINESS/gi, 'Luxury')
+    .trim();
+}
+
+function buildRemoteProduct(item) {
+  const variant = Array.isArray(item.variants) ? item.variants[0] || {} : {};
+  const titleParts = (item.title || '').split(' ');
+  const marca = titleParts[0] || 'Luxury';
+  const cat = Math.random() > 0.5 ? 'Hombres' : 'Mujeres'; // Asignar género aleatoriamente
+  let precio = Number(parseFloat(variant.price || 0)) || 0;
+  const titleLower = (item.title || '').toLowerCase();
+  if (titleLower.includes('combo')) {
+    precio += 300000;
+  } else if (titleLower.includes('camiseta colombia')) {
+    precio += 50000;
+  } else if (titleLower.includes('pareja')) {
+    precio += 150000;
+  } else {
+    precio += 70000; // Para todos los relojes
+  }
+  return {
+    id: item.id,
+    nombre: item.title || 'Reloj Luxury',
+    marca: marca,
+    ref: variant.sku || item.handle || '',
+    cat: cat,
+    precio: precio,
+    desc: normalizeDesc(item.body_html || ''),
+    specs: {},
+    img: item.images && item.images[0] && item.images[0].src ? item.images[0].src : '',
+    badge: variant.available === false ? 'Agotado' : ''
+  };
+}
+
+async function fetchRemotePage(page) {
+  const url = `${REMOTE_CATALOG.base}/collections/${REMOTE_CATALOG.collection}/products.json?limit=${REMOTE_CATALOG.limit}&page=${page}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Error cargando catálogo: ${res.status}`);
+  const json = await res.json();
+  return Array.isArray(json.products) ? json.products : [];
+}
+
+async function loadRemoteCatalog() {
+  const items = [];
+  let page = 1;
+
+  while (page <= REMOTE_CATALOG.maxPages) {
+    const products = await fetchRemotePage(page);
+    if (!products.length) break;
+    items.push(...products.map(buildRemoteProduct));
+    if (products.length < REMOTE_CATALOG.limit) break;
+    page += 1;
+  }
+
+  if (items.length) {
+    PRODUCTOS = items;
+  }
+}
+
+async function initStore() {
+  setWALinks();
+
+  try {
+    await loadRemoteCatalog();
+  } catch (err) {
+    console.error(err);
+  }
+
+  fillBrands();
+  render();
+}
+
+// ============================================================
+// FONDO — Relojes analógicos + digitales flotantes
+// ============================================================
+(function initCanvas() {
+  const canvas = document.getElementById('luxCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, clocks = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    buildClocks();
+  }
+
+  // Paleta dorada
+  const GOLD     = 'rgba(201,168,76,';
+  const GOLD_L   = 'rgba(232,201,122,';
+  const GOLD_D   = 'rgba(122,92,16,';
+
+  // Tipos: 'analog' o 'digital'
+  function buildClocks() {
+    clocks = [];
+    // Distribuir relojes en una cuadrícula difusa para cubrir toda la pantalla
+    const cols = Math.ceil(W / 320) + 1;
+    const rows = Math.ceil(H / 280) + 1;
+    const total = Math.min(cols * rows, 18);
+
+    for (let i = 0; i < total; i++) {
+      const isDigital = Math.random() > 0.45;
+      const r = isDigital ? 0 : (55 + Math.random() * 55);
+      const x = (Math.random() * 1.1 - 0.05) * W;
+      const y = (Math.random() * 1.1 - 0.05) * H;
+      clocks.push({
+        type: isDigital ? 'digital' : 'analog',
+        x, y,
+        r,                                         // radio para analógico
+        w: isDigital ? (120 + Math.random()*100) : 0, // ancho display digital
+        alpha: 0.04 + Math.random() * 0.09,
+        dx: (Math.random() - 0.5) * 0.12,
+        dy: (Math.random() - 0.5) * 0.10,
+        // offset de tiempo para que no todos marquen igual
+        tOff: Math.random() * 86400,               // segundos offset
+        // velocidad del segundero (algunos van más rápido para verse vivos)
+        speed: 0.4 + Math.random() * 1.2,
+        // rotación suave del conjunto
+        rot: Math.random() * Math.PI * 2,
+        drot: (Math.random() - 0.5) * 0.0008,
+        // Para digitales: tamaño de fuente
+        fontSize: isDigital ? (28 + Math.random() * 28) : 0,
+        // pulso del brillo
+        pulsePhase: Math.random() * Math.PI * 2,
+        colonBlink: Math.random() > 0.5,
+      });
+    }
+  }
+
+  // Dibuja un reloj analógico de negocio
+  function drawAnalog(c, now) {
+    const { x, y, r, alpha, rot } = c;
+    const elapsed = now * c.speed + c.tOff;
+    const sec  = elapsed % 60;
+    const min  = (elapsed / 60) % 60;
+    const hr   = (elapsed / 3600) % 12;
+    const pulse = 0.85 + 0.15 * Math.sin(now * 1.2 + c.pulsePhase);
+    const a = alpha * pulse;
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.globalAlpha = a;
+
+    // — Esfera exterior (aro)
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.strokeStyle = GOLD_D + '0.9)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // — Aro interior delgado
+    ctx.beginPath();
+    ctx.arc(0, 0, r * 0.88, 0, Math.PI * 2);
+    ctx.strokeStyle = GOLD_D + '0.4)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    // — Marcas de hora (12 marcas grandes)
+    for (let i = 0; i < 12; i++) {
+      const ang = (i / 12) * Math.PI * 2 - Math.PI / 2;
+      const x1  = Math.cos(ang) * r * 0.82;
+      const y1  = Math.sin(ang) * r * 0.82;
+      const x2  = Math.cos(ang) * r * 0.93;
+      const y2  = Math.sin(ang) * r * 0.93;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = i % 3 === 0 ? GOLD + '0.9)' : GOLD_D + '0.7)';
+      ctx.lineWidth   = i % 3 === 0 ? 1.5 : 0.7;
+      ctx.stroke();
+    }
+
+    // — Marcas de minuto (60 marcas finas)
+    for (let i = 0; i < 60; i++) {
+      if (i % 5 === 0) continue;
+      const ang = (i / 60) * Math.PI * 2 - Math.PI / 2;
+      const x1  = Math.cos(ang) * r * 0.89;
+      const y1  = Math.sin(ang) * r * 0.89;
+      const x2  = Math.cos(ang) * r * 0.93;
+      const y2  = Math.sin(ang) * r * 0.93;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.strokeStyle = GOLD_D + '0.35)';
+      ctx.lineWidth = 0.4;
+      ctx.stroke();
+    }
+
+    // Función para dibujar manecilla con forma de hoja
+    function drawHand(angle, length, width, color) {
+      const ax = Math.cos(angle - Math.PI/2) * length;
+      const ay = Math.sin(angle - Math.PI/2) * length;
+      // contramanecilla
+      const bx = Math.cos(angle - Math.PI/2) * -length * 0.18;
+      const by = Math.sin(angle - Math.PI/2) * -length * 0.18;
+      ctx.beginPath();
+      ctx.moveTo(bx, by);
+      ctx.lineTo(ax, ay);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+
+    // — Manecilla horas
+    drawHand((hr / 12) * Math.PI * 2, r * 0.54, 2.2, GOLD + '0.85)');
+    // — Manecilla minutos
+    drawHand((min / 60) * Math.PI * 2, r * 0.72, 1.5, GOLD_L + '0.80)');
+    // — Segundero (fino, rojo dorado)
+    drawHand((sec / 60) * Math.PI * 2, r * 0.82, 0.7, 'rgba(220,180,60,0.70)');
+
+    // — Centro
+    ctx.beginPath();
+    ctx.arc(0, 0, 3, 0, Math.PI * 2);
+    ctx.fillStyle = GOLD + '0.9)';
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  // Dibuja un reloj digital estilo LCD de negocio
+  function drawDigital(c, now) {
+    const { x, y, w, alpha, rot, fontSize, colonBlink } = c;
+    const elapsed = now * c.speed + c.tOff;
+    const totalSec = Math.floor(elapsed);
+    const h   = String(Math.floor(totalSec / 3600) % 24).padStart(2,'0');
+    const m   = String(Math.floor(totalSec / 60) % 60).padStart(2,'0');
+    const s   = String(totalSec % 60).padStart(2,'0');
+    const ms  = String(Math.floor((elapsed % 1) * 100)).padStart(2,'0');
+    const blink = colonBlink ? (Math.floor(elapsed) % 2 === 0) : true;
+    const pulse = 0.8 + 0.2 * Math.sin(now * 0.8 + c.pulsePhase);
+    const a = alpha * pulse;
+
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.globalAlpha = a;
+
+    const pad   = fontSize * 0.55;
+    const boxW  = w + pad * 2;
+    const boxH  = fontSize * 1.9;
+
+    // — Marco exterior
+    ctx.strokeStyle = GOLD_D + '0.8)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-boxW/2, -boxH/2, boxW, boxH);
+
+    // — Marco interior
+    ctx.strokeStyle = GOLD_D + '0.3)';
+    ctx.lineWidth = 0.4;
+    ctx.strokeRect(-boxW/2+4, -boxH/2+4, boxW-8, boxH-8);
+
+    // — Línea decorativa superior
+    ctx.beginPath();
+    ctx.moveTo(-boxW/2+8, -boxH/2+10);
+    ctx.lineTo( boxW/2-8, -boxH/2+10);
+    ctx.strokeStyle = GOLD_D + '0.25)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+
+    // — Texto hora principal
+    ctx.font = `300 ${fontSize}px 'Courier New', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Sombra/glow dorado
+    ctx.shadowColor = GOLD + '0.6)';
+    ctx.shadowBlur  = fontSize * 0.4;
+    ctx.fillStyle   = GOLD + '0.85)';
+
+    const colon = blink ? ':' : ' ';
+    ctx.fillText(`${h}${colon}${m}${colon}${s}`, 0, -fontSize * 0.08);
+
+    // — Milisegundos pequeños
+    ctx.shadowBlur = 4;
+    ctx.font = `300 ${fontSize * 0.35}px 'Courier New', monospace`;
+    ctx.fillStyle = GOLD_D + '0.7)';
+    ctx.fillText(`.${ms}`, boxW/2 - pad - 2, fontSize * 0.55);
+
+    // — Etiqueta "CHRONOS" muy pequeña
+    ctx.shadowBlur = 0;
+    ctx.font = `400 ${Math.max(7, fontSize * 0.22)}px 'Montserrat', sans-serif`;
+    ctx.letterSpacing = '3px';
+    ctx.fillStyle = GOLD_D + '0.5)';
+    ctx.fillText('Luxury Time', 0, boxH/2 - 9);
+
+    ctx.restore();
+  }
+
+  let lastTime = 0;
+  function draw(ts) {
+    const now = ts / 1000; // segundos reales
+    ctx.clearRect(0, 0, W, H);
+
+    clocks.forEach(c => {
+      // Mover suavemente
+      c.x   += c.dx;
+      c.y   += c.dy;
+      c.rot += c.drot;
+      // Rebotar en bordes con margen
+      const margin = c.type === 'analog' ? c.r + 20 : (c.w/2 + 40);
+      if (c.x < -margin) c.x = W + margin;
+      if (c.x >  W + margin) c.x = -margin;
+      if (c.y < -margin) c.y = H + margin;
+      if (c.y >  H + margin) c.y = -margin;
+
+      if (c.type === 'analog') drawAnalog(c, now);
+      else                     drawDigital(c, now);
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', resize);
+})();
+
+// ============================================================
+// RELOJ LOADER — marcas del reloj
+// ============================================================
+(function buildClockMarks() {
+  const container = document.getElementById('clockMarks');
+  for (let i = 0; i < 60; i++) {
+    const d = document.createElement('div');
+    d.className = 'clock-mark' + (i % 5 === 0 ? ' big' : '');
+    d.style.transform = `rotate(${i * 6}deg)`;
+    container.appendChild(d);
+  }
+})();
+
+// ============================================================
+// LOADER PROGRESS — barra de progreso + ocultar
+// ============================================================
+(function runLoader() {
+  const bar    = document.getElementById('loaderBar');
+  const loader = document.getElementById('loader');
+  let   prog   = 0;
+
+  const interval = setInterval(() => {
+    prog = Math.min(prog + (Math.random() * 18 + 4), 95);
+    bar.style.width = prog + '%';
+  }, 120);
+
+  function finish() {
+    clearInterval(interval);
+    bar.style.width = '100%';
+    setTimeout(() => { loader.classList.add('hidden'); }, 420);
+  }
+
+  // Esperar DOM + fonts listos
+  if (document.readyState === 'complete') { setTimeout(finish, 800); }
+  else { window.addEventListener('load', () => setTimeout(finish, 600)); }
+  // Fallback máximo
+  setTimeout(finish, 3500);
+})();
+
+// ============================================================
+// TIENDA — lógica principal
+// ============================================================
+let filtered  = [];
+let page      = 0;
+
+// Links WhatsApp globales
+function setWALinks() {
+  const msg  = buildWA(CFG.whatsapp, 'Hola! Me interesa un reloj de su catálogo.');
+  ['headerWA','footerWA','waFab'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.href = msg;
+  });
+}
+
+// Poblar selector de marcas
+function fillBrands() {
+  const sel    = document.getElementById('filterBrand');
+  const brands = [...new Set(PRODUCTOS.map(p => p.marca))].sort();
+  brands.forEach(b => {
+    const o = document.createElement('option');
+    o.value = b; o.textContent = b;
+    sel.appendChild(o);
+  });
+}
+
+// Formato de precio
+function fmt(n) {
+  return Number(n).toLocaleString('es-CO');
+}
+
+// Obtener lista filtrada
+function getFiltered() {
+  const q    = san(document.getElementById('searchInput').value).toLowerCase().trim();
+  const brd  = document.getElementById('filterBrand').value;
+  const cat  = document.getElementById('filterCategory').value;
+  const sort = document.getElementById('sortBy').value;
+
+  let arr = PRODUCTOS.filter(p => {
+    const mq = !q || san(p.nombre).toLowerCase().includes(q)
+                  || san(p.marca).toLowerCase().includes(q)
+                  || san(p.ref).toLowerCase().includes(q);
+    const mb = !brd || p.marca === brd;
+    const mc = !cat || p.cat === cat;
+    return mq && mb && mc;
+  });
+
+  if (sort === 'price-asc')  arr.sort((a,b) => a.precio - b.precio);
+  if (sort === 'price-desc') arr.sort((a,b) => b.precio - a.precio);
+  if (sort === 'name-asc')   arr.sort((a,b) => a.nombre.localeCompare(b.nombre));
+  if (sort === 'brand-asc')  arr.sort((a,b) => a.marca.localeCompare(b.marca));
+
+  return arr;
+}
+
+// Crear tarjeta de producto (sin innerHTML con datos de usuario)
+function makeCard(p) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.setAttribute('role', 'listitem');
+  card.setAttribute('tabindex', '0');
+  // Animación escalonada
+  card.style.animationDelay = (Math.random() * 0.2) + 's';
+
+  // Badge
+  if (p.badge) {
+    const b = document.createElement('div');
+    b.className = 'card-badge';
+    b.textContent = p.badge;
+    card.appendChild(b);
+  }
+
+  // Imagen
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'card-img-wrap';
+  const safeUrl = safeImg(p.img);
+  if (safeUrl) {
+    const img = document.createElement('img');
+    img.alt = san(p.nombre);
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.onload  = () => img.classList.add('loaded');
+    img.onerror = () => { imgWrap.innerHTML = '<span class="card-no-img">⌚</span>'; };
+    img.src = safeUrl;
+    imgWrap.appendChild(img);
+  } else {
+    const ico = document.createElement('span');
+    ico.className = 'card-no-img';
+    ico.textContent = '⌚';
+    imgWrap.appendChild(ico);
+  }
+  card.appendChild(imgWrap);
+
+  // Cuerpo
+  const body = document.createElement('div');
+  body.className = 'card-body';
+
+  const brand = document.createElement('div');
+  brand.className = 'card-brand';
+  brand.textContent = p.marca;
+  body.appendChild(brand);
+
+  const name = document.createElement('div');
+  name.className = 'card-name';
+  name.textContent = p.nombre;
+  body.appendChild(name);
+
+  const ref = document.createElement('div');
+  ref.className = 'card-ref';
+  ref.textContent = `Ref. ${p.ref} · ${p.cat}`;
+  body.appendChild(ref);
+
+  const footer = document.createElement('div');
+  footer.className = 'card-footer';
+
+  const price = document.createElement('div');
+  price.className = 'card-price';
+  price.innerHTML = `<small>${CFG.simbolo}</small>${fmt(p.precio)}`;
+  footer.appendChild(price);
+
+  const btn = document.createElement('button');
+  btn.className = 'btn-buy';
+  btn.setAttribute('aria-label', `Pedir ${p.nombre} por WhatsApp`);
+  btn.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Pedir`;
+  btn.onclick = (e) => { e.stopPropagation(); window.open(buildWA(CFG.whatsapp, `Hola! Me interesa:\n\n⌚ *${p.nombre}*\nMarca: ${p.marca}\nRef: ${p.ref}\nPrecio: ${CFG.simbolo}${fmt(p.precio)} ${CFG.moneda}\n\n¿Está disponible?`), '_blank', 'noopener,noreferrer'); };
+  footer.appendChild(btn);
+  body.appendChild(footer);
+  card.appendChild(body);
+
+  card.onclick = () => openModal(p);
+  card.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') openModal(p); };
+
+  return card;
+}
+
+// Renderizar (reinicia)
+function render() {
+  filtered = getFiltered();
+  page     = 0;
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  appendPage();
+  document.getElementById('emptyState').style.display = filtered.length === 0 ? 'block' : 'none';
+  document.getElementById('totalStat').textContent = PRODUCTOS.length + '+';
+  updateCount();
+}
+
+// Agregar una página de resultados
+function appendPage() {
+  const grid  = document.getElementById('grid');
+  const start = page * CFG.perPagina;
+  const slice = filtered.slice(start, start + CFG.perPagina);
+  const frag  = document.createDocumentFragment();
+  slice.forEach(p => frag.appendChild(makeCard(p)));
+  grid.appendChild(frag);
+  page++;
+  updateCount();
+  document.getElementById('loadMoreArea').style.display =
+    filtered.length > page * CFG.perPagina ? 'block' : 'none';
+}
+
+function loadMore() { appendPage(); }
+
+function updateCount() {
+  const shown = Math.min(page * CFG.perPagina, filtered.length);
+  document.getElementById('showingN').textContent = shown;
+  document.getElementById('totalN').textContent   = filtered.length;
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function openModal(p) {
+  // Imagen
+  const media = document.getElementById('modalMedia');
+  const safeUrl = safeImg(p.img);
+  if (safeUrl) {
+    const img = document.createElement('img');
+    img.alt = san(p.nombre);
+    img.src = safeUrl;
+    media.innerHTML = '';
+    media.appendChild(img);
+  } else {
+    media.textContent = '⌚';
+  }
+
+  document.getElementById('modalBrand').textContent = p.marca;
+  document.getElementById('modalName').textContent  = p.nombre;
+  document.getElementById('modalRef').textContent   = `Ref. ${p.ref} · ${p.cat}`;
+  document.getElementById('modalDesc').textContent  = p.desc;
+  document.getElementById('modalPrice').innerHTML   = `<small>${CFG.simbolo}</small> ${fmt(p.precio)} <small>${CFG.moneda}</small>`;
+  document.getElementById('modalWA').href = buildWA(CFG.whatsapp,
+    `Hola! Me interesa este reloj:\n\n⌚ *${p.nombre}*\nMarca: ${p.marca}\nRef: ${p.ref}\nPrecio: ${CFG.simbolo}${fmt(p.precio)} ${CFG.moneda}\n\n¿Está disponible?`);
+
+  // Specs
+  const specsEl = document.getElementById('modalSpecs');
+  specsEl.innerHTML = '';
+  Object.entries(p.specs).forEach(([k, v]) => {
+    const s = document.createElement('div');
+    s.className = 'spec';
+    const l = document.createElement('div'); l.className = 'spec-label'; l.textContent = k;
+    const vv = document.createElement('div'); vv.className = 'spec-val'; vv.textContent = v;
+    s.appendChild(l); s.appendChild(vv);
+    specsEl.appendChild(s);
+  });
+
+  document.getElementById('modalBg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleModalBgClick(e) {
+  if (e.target === document.getElementById('modalBg')) closeModal();
+}
+
+// Cerrar con Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ============================================================
+// DEBOUNCE — evita render excesivo al escribir
+// ============================================================
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+const debouncedRender = debounce(render, 220);
+
+['searchInput','filterBrand','filterCategory','sortBy'].forEach(id => {
+  document.getElementById(id).addEventListener('input',  debouncedRender);
+  document.getElementById(id).addEventListener('change', render);
+});
+
+// ============================================================
+// INIT
+// ============================================================
+initStore();
+</script>
+</body>
+</html>
